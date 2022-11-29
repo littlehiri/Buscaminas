@@ -19,6 +19,7 @@ public class Cell : MonoBehaviour
         //Variables para recoger la posicion inicial de la celda
         int x = (int)this.transform.position.x; //La posicion en x de esa celda concreta (La columna)       (int) lo usamos para transformar el float en numero entero
         int y = (int)this.transform.position.y; //La posicion en y de esa celda concreta (Horizontal)
+        GridHelper.cells[x, y] = this;
     }
 
     // Update is called once per frame
@@ -40,7 +41,7 @@ public class Cell : MonoBehaviour
 
         }
         else
-        {
+        {//Adjacent count es el numero del array
             GetComponent<SpriteRenderer>().sprite = emptyTexture[adjacentCount];
             
         }
@@ -51,6 +52,8 @@ public class Cell : MonoBehaviour
         if (hasMine)
         {
             Debug.Log("Tiene mina");
+            GridHelper.UncoverAllTheMines();
+            //mostrar mensaje de game over
         }
         //Si no hay mina en esa celda
         else
