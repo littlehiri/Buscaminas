@@ -11,14 +11,17 @@ public class Cell : MonoBehaviour
     //Necesitamos la imagen de que hay una mina
     public Sprite mineTexture;
     // Start is called before the first frame update
+
+    //Creamos unas variables donde guardar la posicion de la celda concreta
+    int x, y;
     void Start()
     {
         //Le decimos que hay un 15% de posibilidades de que haya una mina en esa celda
         //Si se cumple en este caso que ese valor sea menor que 0.15, hasMine será verdadero sino falso
         hasMine = (Random.value < 0.15);
         //Variables para recoger la posicion inicial de la celda
-        int x = (int)this.transform.position.x; //La posicion en x de esa celda concreta (La columna)       (int) lo usamos para transformar el float en numero entero
-        int y = (int)this.transform.position.y; //La posicion en y de esa celda concreta (Horizontal)
+        x = (int)this.transform.position.x; //La posicion en x de esa celda concreta (La columna)       (int) lo usamos para transformar el float en numero entero
+        y = (int)this.transform.position.y; //La posicion en y de esa celda concreta (Horizontal)
         GridHelper.cells[x, y] = this;
     }
 
@@ -63,6 +66,11 @@ public class Cell : MonoBehaviour
              * descubrir toda el area sin minas alrededor de la celda destapada
              * comprobar si el juego ha terminado o no
              */
+            int y = (int)this.transform.parent.position.y; //Obtenemos la Y del padre de este
+            //Al metodo de abajo le pasamos la posicion de esta celda concreta
+            //Cargamos la textura de minas adyacentes adecuada
+            LoadTexture(GridHelper.CountAdjacentMines(x, y));
+
         }
     }
 }

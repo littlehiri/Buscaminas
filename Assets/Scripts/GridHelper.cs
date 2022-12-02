@@ -27,7 +27,7 @@ public class GridHelper : MonoBehaviour
         }
     }
     //Metodo para saber si hay una mina en una posicion dada
-    public static bool HasMine(int x, int y)//La posicion de la celda
+    public static bool HasMineAt(int x, int y)//La posicion de la celda
     {
         //Si estas condiciones se cumplen estaremos dentro de la rejilla
         if(x >= 0 && y >= 0 && x < w && y < h)
@@ -55,6 +55,12 @@ public class GridHelper : MonoBehaviour
         if (HasMineAt(x - 1, y)) count++; //medio-izquierda
         if (HasMineAt(x, y + 1)) count++; //medio-arriba
         if (HasMineAt(x, y - 1)) count++; //medio-abajo
-        if (HasMineAt(x + 1, y + 1)) count++;
+        if (HasMineAt(x + 1, y + 1)) count++; //arriba-derecha
+        if (HasMineAt(x - 1, y + 1)) count++; //arriba-izquierda
+        if (HasMineAt(x + 1, y - 1)) count++; //abajo-derecha
+        if (HasMineAt(x - 1, y - 1)) count++; //abajo-izquierda
+
+        //Una vez hechas las comprobaciones devolvemos el número de minas
+        return count;
     }
 }
