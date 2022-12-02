@@ -66,10 +66,11 @@ public class Cell : MonoBehaviour
              * descubrir toda el area sin minas alrededor de la celda destapada
              * comprobar si el juego ha terminado o no
              */
-            int y = (int)this.transform.parent.position.y; //Obtenemos la Y del padre de este
-            //Al metodo de abajo le pasamos la posicion de esta celda concreta
+            
             //Cargamos la textura de minas adyacentes adecuada
             LoadTexture(GridHelper.CountAdjacentMines(x, y));
+            //Le pasamos la posicion en X e Y de esa celda concreta y vemos en el array de celdas si esta habia sido visitada o no 
+            GridHelper.FloodFillUncover(x, y, new bool[GridHelper.w, GridHelper.h]);
 
         }
     }

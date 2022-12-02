@@ -63,4 +63,37 @@ public class GridHelper : MonoBehaviour
         //Una vez hechas las comprobaciones devolvemos el número de minas
         return count;
     }
+
+    //Este metodo levanta una posicion en X e Y
+    public static void FloodFillUncover(int x, int y, bool[,] visited) //Le pasamos una posicion 
+    {
+        //Solo debemos proceder si el punto (x,y) es valido (está dentro de la rejilla)
+        if (x >= 0 && y >= 0 && x < w && y < h)
+        {
+            //Si ya he pasado por esta celda, el algoritmo de FFU no debe hacer nada
+            if (visited[x, y])
+            {
+                //salimos del metodo si se cumple la condicion
+                return;
+            }
+            //Si estoy aqui es que la celda no habia sido visitada
+            //Y entonces cuento el numero de minas adyacentes a mi posicion (x,y)
+            int adjacentMines = CountAdjacentMines(x, y);
+            //Muestro en la celda, el numero de minas adyacentes(desde 0 hasya 8 maximo)
+            cells[x, y].LoadTexture(adjacentMines);
+            if (adjacentMines > 0)
+            {
+                return;
+            }
+            //Si esta celda no ha sido visitada y tampoco tiene minas adyacentes
+            //Marcamos la celda actual como visitada
+            visited[x, y] = true;
+            //visito todas las celdas vecinas en Conectividad de la celda actual
+            FloodFillUncover(x - 1, y, visited);
+            FloodFillUncover(x + 1, y, visited);
+            FloodFillUncover(x, y - 1, visited);
+            FloodFillUncover(x, y + 1, visited);
+        }
+       
+    }
 }
