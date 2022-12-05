@@ -54,9 +54,10 @@ public class Cell : MonoBehaviour
     { //Si esa celda tiene una mina
         if (hasMine)
         {
-            Debug.Log("Tiene mina");
+            
             GridHelper.UncoverAllTheMines();
             //mostrar mensaje de game over
+            Debug.Log("Tiene mina");
         }
         //Si no hay mina en esa celda
         else
@@ -71,7 +72,11 @@ public class Cell : MonoBehaviour
             LoadTexture(GridHelper.CountAdjacentMines(x, y));
             //Le pasamos la posicion en X e Y de esa celda concreta y vemos en el array de celdas si esta habia sido visitada o no 
             GridHelper.FloodFillUncover(x, y, new bool[GridHelper.w, GridHelper.h]);
-
+            //Comprobar si el juego ha acabado
+            if (GridHelper.HasTheGameEnded())
+            {
+                Debug.Log("¡Has ganado! Fin de la partida. <3");
+            }
         }
     }
 }
