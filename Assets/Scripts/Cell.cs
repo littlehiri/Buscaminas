@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class Cell : MonoBehaviour
 {
+    public GameManager final;
     //Variable que nos permite conocer si un panel tiene una mina o no
     public bool hasMine;
     //Array en el que guardamos todas las imagenes que corresponden a que no hay una mina en esa celda al pulsar sobre ella
