@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 //Clase tipo helper, un script que nos sirve de apoyo pero no depende de MonoBehaviour
 public class GridHelper : MonoBehaviour
 {
+    public TextMeshProUGUI gameOver;
+
     //Variable para conocer el ancho y alto de la rejilla
     public static int w = 15; //Ancho de la malla       static significa que solo habra por ejemplo en este caso un ancho y un alto de 
     public static int h = 15; //Alto de la malla
@@ -116,5 +120,10 @@ public class GridHelper : MonoBehaviour
             }
         }
         return true;
+        
     }//Este metodo cuando devuelva un valor, no seguira ejecutandose, saldra del metodo
+    public static void Over()
+    {
+        
+    }
 }

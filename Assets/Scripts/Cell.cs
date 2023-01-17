@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Cell : MonoBehaviour
 {
+    public TextMeshProUGUI gameWin;
     public GameManager final;
     //Variable que nos permite conocer si un panel tiene una mina o no
     public bool hasMine;
@@ -79,6 +80,7 @@ public class Cell : MonoBehaviour
             if (GridHelper.HasTheGameEnded())
             {
                 Debug.Log("¡Has ganado! Fin de la partida. <3");
+                gameWin.enabled = true;
             }
         }
     }
