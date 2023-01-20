@@ -2,30 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine.UI;   
 
 public class Cell : MonoBehaviour
 {
-    public TextMeshProUGUI gameWin;
-    public GameManager final;
+    public GameManager referencia;
     //Variable que nos permite conocer si un panel tiene una mina o no
     public bool hasMine;
-    //Array en el que guardamos todas las imagenes que corresponden a que no hay una mina en esa celda al pulsar sobre ella
-    public Sprite[] emptyTexture;
+    //Array en el que guardamos todas las imágenes que corresponden a que no hay una mina en esa celda al pulsar sobre ella
+    public Sprite[] emptyTextures;
     //Necesitamos la imagen de que hay una mina
     public Sprite mineTexture;
-    // Start is called before the first frame update
 
-    //Creamos unas variables donde guardar la posicion de la celda concreta
+    //Creamos unas variables donde guardar la posición de la celda concreta
     int x, y;
+
+    // Start is called before the first frame update
     void Start()
     {
         //Le decimos que hay un 15% de posibilidades de que haya una mina en esa celda
-        //Si se cumple en este caso que ese valor sea menor que 0.15, hasMine será verdadero sino falso
-        hasMine = (Random.value < 0.15);
-        //Variables para recoger la posicion inicial de la celda
-        x = (int)this.transform.position.x; //La posicion en x de esa celda concreta (La columna)       (int) lo usamos para transformar el float en numero entero
-        y = (int)this.transform.position.y; //La posicion en y de esa celda concreta (Horizontal)
+        hasMine = (Random.value < 0.15);//Random.value nos da un valor entre 0 y 1. Si se cumple en este caso que ese valor sea menor que 0.15, hasMine será verdadero, sino falso
+        //Variables para recoger la posición inicial de la celda
+        x = (int)this.transform.position.x; //La posición en X de esa celda concreta (la columna)       (int) lo usamos para transformar ese float que nos da el transform.position a número entero
+        y = (int)this.transform.parent.position.y; //La posición en Y de esa celda concreta (la fila)
+        //Metemos esta celda concreta(this) con esa X e Y que hemos obtenido en la posición X e Y correspondiente de ese array de celdas
         GridHelper.cells[x, y] = this;
     }
 
@@ -34,53 +34,62 @@ public class Cell : MonoBehaviour
     {
         
     }
-    public bool Iscovered()
+
+    //Método de ayuda para saber si la celda ha sido destapada o no devolviéndonos verdadero o falso
+    //Comprobamos entonces si la imagen es la de 'panel' o bien otra
+    public bool IsCovered()
     {
-        //Coge del SpriteRenderer de esa celda la textura que esta ahí puesta para saber si es un panel
+        //Coge del SpriteRenderer de esa celda la textura que está ahi puesta para saber si es un panel
         //o no. En caso de que sea un panel, será verdadero, y sino falso
         return GetComponent<SpriteRenderer>().sprite.texture.name == "panel";
     }
-    public void LoadTexture(int adjacentCount)//Para pasarle el conteo de minas adayacentes
-    {
-        if (hasMine)
-        {
-            GetComponent<SpriteRenderer>().sprite = mineTexture;
 
-        }
-        else
-        {//Adjacent count es el numero del array
-            GetComponent<SpriteRenderer>().sprite = emptyTexture[adjacentCount];
-            
-        }
-    }
-    //Metodo para cuando pulsamos en una celda y soltamos el click del raton
-    public void OnMouseUpAsButton()
-    { //Si esa celda tiene una mina
+    //Método para cargar las texturas en las celdas
+    public void LoadTexture(int adjacentCount)//para pasarle el conteo de minas adyacentes de una celda
+    {
+        //Si hay una mina en esa celda
         if (hasMine)
         {
-            
-            GridHelper.UncoverAllTheMines();
-            //mostrar mensaje de game over
-            Debug.Log("Tiene mina");
+            //Accedemos al SpriteRenderer de esa celda para cambiar su imagen a una de mina
+            GetComponent<SpriteRenderer>().sprite = mineTexture;
         }
         //Si no hay mina en esa celda
         else
         {
-            //To do:
-            /*Cmabiar la textura de la celda
-             * descubrir toda el area sin minas alrededor de la celda destapada
-             * comprobar si el juego ha terminado o no
-             */
-            
+            //Accedemos al SpriteRenderer de esa celda para cambiar su imagen a una de las que están dentro del array EmptyTextures
+            GetComponent<SpriteRenderer>().sprite = emptyTextures[adjacentCount];
+        }
+    }
+
+    //Método para cuando pulsamos en una celda y soltamos el click del ratón
+    private void OnMouseUpAsButton()
+    {
+        //Si esa celda tiene una mina
+        if (hasMine)
+        {   
+            //TO DO:
+            //Llamamos al método que descubre todas las minas del juego
+            GridHelper.UncoverAllTheMines();
+            //mostrar mensaje de Game Over
+            Debug.Log("Pringaoooo");
+            referencia.gameFail.SetActive(true);
+        }
+        //Si no hay mina en esa celda
+        else
+        {
+            //TO DO:
+            //cambiar la textura de la celda
+            //Al método de abajo le pasamos la posición de esta celda concreta
             //Cargamos la textura de minas adyacentes adecuada
-            LoadTexture(GridHelper.CountAdjacentMines(x, y));
-            //Le pasamos la posicion en X e Y de esa celda concreta y vemos en el array de celdas si esta habia sido visitada o no 
+            LoadTexture(GridHelper.CountAdjacentMines(x, y)); //Usamos el método que cuenta cuantas minas hay alrededor de la celda
+            //descubrir toda el área sin minas alrededor de la celda destapada
+            //Le pasamos la posición en X e Y de esa celda concreta y vemos en el array de celdas si esta había sido visitada o no
             GridHelper.FloodFillUncover(x, y, new bool[GridHelper.w, GridHelper.h]);
-            //Comprobar si el juego ha acabado
+            //comprobar si el juego ha acabado o no
             if (GridHelper.HasTheGameEnded())
             {
-                Debug.Log("¡Has ganado! Fin de la partida. <3");
-                gameWin.enabled = true;
+                Debug.Log("¡Has ganado! Fin de la partida.");
+                referencia.gameWin.SetActive(true);
             }
         }
     }
