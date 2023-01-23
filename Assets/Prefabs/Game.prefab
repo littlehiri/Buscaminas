@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9396b6f1751f044d9660ee012b0fe5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameWin: {fileID: 0}
-  gameFail: {fileID: 0}
+  gameWin: {fileID: 2780655358818501237, guid: ba5e43f50c76f044daec04142a9ad47e, type: 3}
+  gameFail: {fileID: 3173452536873620852, guid: 255186e2046ad0f438790b34a172f313, type: 3}

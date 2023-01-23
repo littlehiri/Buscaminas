@@ -71,8 +71,10 @@ public class Cell : MonoBehaviour
             //Llamamos al método que descubre todas las minas del juego
             GridHelper.UncoverAllTheMines();
             //mostrar mensaje de Game Over
-            Debug.Log("Pringaoooo");
+            GetComponent<AudioSource>().Play();
             referencia.gameFail.SetActive(true);
+            Debug.Log("Pringaoooo");
+            
         }
         //Si no hay mina en esa celda
         else
